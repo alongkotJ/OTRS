@@ -1,0 +1,17 @@
+version: "3.7"
+services:
+   mysqldb:
+      image: mysql
+      restart: always
+      environment: 
+         MYSQL_DATABASE: "OTRS_DB_RESTAURANT"
+         MYSQL_USERNAME: admin
+         MYSQL_PASSWORD: admin
+         MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+      ports:
+         - "3306:3306"
+      expose:
+         - "3306"
+      volumes:
+         - /home/alongkot/Documents/mysql_data/OTRS:/var/lib/mysql
+   
