@@ -11,7 +11,7 @@ public abstract class Entity<T> {
 
 	@Id
 	@Column(name = "ID")
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+//	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private T id;
 
 	@Column(name = "FULLNAME")
@@ -31,6 +31,11 @@ public abstract class Entity<T> {
 
 	public void setFullname(String fullname) {
 		this.fullname = fullname;
+	}
+
+	@Override
+	public String toString() {
+		return "Entity [id=" + id + ", fullname=" + fullname + "]";
 	}
 
 }

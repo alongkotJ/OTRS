@@ -15,9 +15,9 @@ import javax.persistence.Table;
 @Table(name = "RESTAURANT")
 public class Restaurant extends BaseEntity<String> {
 
-	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-	@Column(name = "TABLE_ID")
-	@JoinColumn(name = "ID")
+	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "restaurant")
+//	@Column(name = "TABLE_ID")
+//	@JoinColumn(name = "ID")
 	private List<RestaurantTable> restaurantTables;
 
 	@Column(name = "ADDRESS")
@@ -56,6 +56,12 @@ public class Restaurant extends BaseEntity<String> {
 
 	public void setAddress(String address) {
 		this.address = address;
+	}
+
+	@Override
+	public String toString() {
+		return "Restaurant [id=" + this.getId() + " fullname=" + this.getFullname() + " isModified=" + this.isModified()
+				+ " restaurantTables=" + restaurantTables + ", address=" + address + "]";
 	}
 
 }

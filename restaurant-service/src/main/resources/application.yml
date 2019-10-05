@@ -17,10 +17,10 @@ server:
       
 logging:
    level:
-      #org.springframework.web: DEBUG
-      #guru.springframework.controllers: DEBUG
-      #org.hibernate: DEBUG
-      root: DEBUG
+      org.springframework.web: DEBUG
+      guru.springframework.controllers: DEBUG
+      org.hibernate: DEBUG
+      #root: DEBUG
 
 
 

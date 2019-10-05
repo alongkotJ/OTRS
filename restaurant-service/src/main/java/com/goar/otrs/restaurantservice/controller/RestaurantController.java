@@ -13,8 +13,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.goar.otrs.restaurantservice.entities.Entity;
 import com.goar.otrs.restaurantservice.entities.Restaurant;
 import com.goar.otrs.restaurantservice.exception.DuplicateRestaurantException;
 import com.goar.otrs.restaurantservice.exception.InvalidRestaurantException;
@@ -42,14 +44,18 @@ public class RestaurantController {
 				: new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
 
-	@PostMapping("/")
+	@PostMapping({ "", "/" })
 	public ResponseEntity<Restaurant> add(@RequestBody RestaurantVO restaurantVo) throws Exception {
 
 		logger.info(String.format("restaurant-service add() invoked: %s for %s", restaurantService.getClass().getName(),
-				restaurantVo.getName()));
+				restaurantVo.getFullname()));
+		
+		logger.info("Before BEAN COPY RestaurantVO " + restaurantVo.toString());
 
 		Restaurant restaurant = Restaurant.getDummyRestaurant();
 		BeanUtils.copyProperties(restaurantVo, restaurant);
+
+		logger.info("BEAN COPY RestaurantVO " + restaurantVo.toString() + " -> Restaurant " + restaurant.toString());
 
 		try {
 			restaurantService.addOrUpdate(restaurant);
@@ -57,7 +63,7 @@ public class RestaurantController {
 			logger.log(Level.WARNING, "Exception raised add Restaurant REST Call {0}", ex);
 			throw ex;
 		} catch (Exception ex) {
-			logger.log(Level.SEVERE, "Exception raised add Restaurant REST Call {0}", ex);
+			logger.log(Level.SEVERE, "Exception raised add Restaurant REST Call " + ex);
 			throw ex;
 		}
 		return new ResponseEntity<>(HttpStatus.CREATED);
@@ -78,19 +84,20 @@ public class RestaurantController {
 		return restaurant != null ? new ResponseEntity<>(restaurant, HttpStatus.OK)
 				: new ResponseEntity<>(HttpStatus.NOT_FOUND);
 	}
-//
-//	@GetMapping("/")
-//	public ResponseEntity<Collection<Restaurant>> findByFullname(@RequestParam("name") String name) throws Exception {
-//		logger.info(String.format("restaurant-service findByFullname() invoked:{} for {} ",
-//				restaurantService.getClass().getName(), name));
-//		Collection<Restaurant> restaurants = null;
-//		try {
-//			restaurants = restaurantService.findByFullname(name.trim());
-//		} catch (Exception e) {
-//			throw e;
-//		}
-//		return restaurants.size() > 0 ? new ResponseEntity<Collection<Restaurant>>(restaurants, HttpStatus.OK)
-//				: new ResponseEntity<Collection<Restaurant>>(HttpStatus.NO_CONTENT);
-//	}
+
+	@GetMapping("/")
+	public ResponseEntity<Collection<Restaurant>> findByFullname(@RequestParam("fullname") String fullname)
+			throws Exception {
+		logger.info(String.format("restaurant-service findByFullname() invoked:{} for {} ",
+				restaurantService.getClass().getName(), fullname));
+		Collection<Restaurant> restaurants = null;
+		try {
+			restaurants = restaurantService.findByFullname(fullname.trim());
+		} catch (Exception e) {
+			throw e;
+		}
+		return restaurants.size() > 0 ? new ResponseEntity<Collection<Restaurant>>(restaurants, HttpStatus.OK)
+				: new ResponseEntity<Collection<Restaurant>>(HttpStatus.NOT_FOUND);
+	}
 
 }

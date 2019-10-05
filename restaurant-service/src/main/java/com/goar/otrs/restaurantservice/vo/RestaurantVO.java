@@ -1,34 +1,53 @@
 package com.goar.otrs.restaurantservice.vo;
 
 import java.util.List;
-import java.util.Optional;
 
 import com.goar.otrs.restaurantservice.entities.RestaurantTable;
 
 public class RestaurantVO {
 
-	private Optional<List<RestaurantTable>> tables = Optional.empty();
+	private List<RestaurantTable> restaurantTables;
 
-	private String name;
+	private String fullname;
 
 	private String id;
 
 	private String address;
 
-	public Optional<List<RestaurantTable>> getTables() {
-		return tables;
+	private boolean isModified;
+
+	public RestaurantVO() {
+		super();
 	}
 
-	public void setTables(Optional<List<RestaurantTable>> tables) {
-		this.tables = tables;
+	public RestaurantVO(String id, String fullname) {
+		super();
+		this.fullname = fullname;
+		this.id = id;
+		this.isModified = false;
 	}
 
-	public String getName() {
-		return name;
+	public RestaurantVO(String id, String fullname, List<RestaurantTable> restaurantTables, String address) {
+		this.id = id;
+		this.fullname = fullname;
+		this.restaurantTables = restaurantTables;
+		this.address = address;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public List<RestaurantTable> getRestaurantTables() {
+		return restaurantTables;
+	}
+
+	public void setRestaurantTables(List<RestaurantTable> restaurantTables) {
+		this.restaurantTables = restaurantTables;
+	}
+
+	public String getFullname() {
+		return fullname;
+	}
+
+	public void setFullname(String fullname) {
+		this.fullname = fullname;
 	}
 
 	public String getId() {
@@ -45,6 +64,20 @@ public class RestaurantVO {
 
 	public void setAddress(String address) {
 		this.address = address;
+	}
+
+	public boolean isModified() {
+		return isModified;
+	}
+
+	public void setModified(boolean isModified) {
+		this.isModified = isModified;
+	}
+
+	@Override
+	public String toString() {
+		return "RestaurantVO [restaurantTables=" + restaurantTables + ", fullname=" + fullname + ", id=" + id
+				+ ", address=" + address + ", isModified=" + isModified + "]";
 	}
 
 }
